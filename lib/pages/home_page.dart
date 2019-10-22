@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import '../service/service.method.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String homePageContent = '获取初始数据';
+  
+  @override
+  void initState() { 
+    super.initState();
+    getHomePageContent().then((val) {
+      print('接口返回数据.........');
+      setState(() {
+        homePageContent = val.toString();
+      });
+    });
+  }
   Widget build(BuildContext context) {
-    getHttp();
     return Scaffold(
-      body: Center(child: Text('商城首页'),),
+      appBar: AppBar(title: Text('百姓生活+')),
+      body: SingleChildScrollView(
+        child: Text(homePageContent),
+      ),
     );
   }
-
-  void getHttp() async{
-    try {
-      Response response;
-      response = await Dio().get("http://www.baidu.com");
-      // return print(response);
-      return print(response);
-    }catch(e) {
-      return print(e);
-    }
-  }
 }
+
